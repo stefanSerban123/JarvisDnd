@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "dndjarvis-ccc11": {
+      "hosting": {
+        "jarvis-dnd": [
+          "dndjarvis-ccc11"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "dndjarvis-ccc11"
+  }
+}
