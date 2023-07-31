@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { finalize } from 'rxjs/operators';
-
-import { QuoteService } from './quote.service';
+import { Firestore, collectionData, collection  } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
@@ -9,22 +7,18 @@ import { QuoteService } from './quote.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  quote: string | undefined;
+  
   isLoading = false;
+  players: any;
 
-  constructor(private quoteService: QuoteService) {}
+  constructor(private db: Firestore) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this.quoteService
-      .getRandomQuote({ category: 'dev' })
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe((quote: string) => {
-        this.quote = quote;
-      });
+    this.players = collection(this.db, 'Players');
+
+    collectionData(this.players).subscribe((data) => {
+      console.log(data);
+    });
   }
 }

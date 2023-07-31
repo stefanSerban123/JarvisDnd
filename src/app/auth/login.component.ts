@@ -25,21 +25,18 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private socialAuthService: SocialAuthService
-  ) {
-    
-  }
+  ) {}
 
   ngOnInit() {
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
-      
+
       if (user != null) {
-        this.authenticationService.login({username: 'user', password: '', remember: false}).subscribe(() => {
+        this.authenticationService.login({ username: this.user.name, password: '', remember: false }).subscribe(() => {
           this.router.navigate(['home', { replaceUrl: true }]);
         });
         // this.router.navigate([this.route.snapshot.queryParams['redirect'] || '/'], { replaceUrl: true });
       }
     });
   }
-
 }
