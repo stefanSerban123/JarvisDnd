@@ -14,7 +14,16 @@
             <i class="far fa-3x fa-user-circle text-muted"></i>
           </h4>
 
-          <asl-google-signin-button type='standard' size='large'></asl-google-signin-button>
+          <!-- <asl-google-signin-button type='standard' size='large'></asl-google-signin-button> -->
+
+
+          <p>
+            Authentication 
+            <code>{{ (user | async) | json }}</code>
+            <button (click)="login()" *ngIf="showLoginButton">Log in with Google</button>
+            <button (click)="loginAnonymously()" *ngIf="showLoginButton">Log in anonymously</button>
+          </p>
+
         </div>
       </div>
     </div>

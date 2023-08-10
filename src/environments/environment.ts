@@ -19,6 +19,7 @@ export const environment = {
     authDomain: 'dndjarvis-ccc11.firebaseapp.com',
     messagingSenderId: '1098659875935',
     measurementId: 'G-RJD042CRFZ',
+    databaseURL: 'https://dndjarvis-ccc11-default-rtdb.europe-west1.firebasedatabase.app'
   },
   production: false,
   version: env['npm_package_version'] + '-dev',

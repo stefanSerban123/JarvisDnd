@@ -6,7 +6,7 @@ import { SocialAuthService } from '@abacritt/angularx-social-login';
 
 export interface LoginContext {
   username: string;
-  password: string;
+  userId: string;
   remember?: boolean;
 }
 
@@ -29,7 +29,7 @@ export class AuthenticationService {
     // Replace by proper authentication call
     const data = {
       username: context.username,
-      token: '123456',
+      userId: context.userId
     };
     this.credentialsService.setCredentials(data, context.remember);
     return of(data);

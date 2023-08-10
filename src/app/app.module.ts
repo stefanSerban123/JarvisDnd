@@ -17,6 +17,9 @@ import { ShellModule } from './shell/shell.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { FunctionsModule, getFunctions, provideFunctions } from '@angular/fire/functions';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
@@ -35,8 +38,12 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
     AuthModule,
     AppRoutingModule,
     SocialLoginModule,
+    FunctionsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase()),
+    provideStorage(() => getStorage()),
+    provideFunctions(() => getFunctions()),
     provideFirestore(() => getFirestore()), // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
