@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "build": "npm run write:env -s && ng build && firebase deploy",
+    "build-and-deploy-to-firebase": "npm run write:env -s && ng build && firebase deploy",
     "start": "npm run write:env -s && ng serve --proxy-config proxy.conf.js",
-    "deploy": "npm run write:env -s && ng deploy",
     "serve:sw": "npm run build -s && npx http-server ./dist -p 4200",
     "lint": "ng lint && stylelint \"src/**/*.scss\"",
     "test": "npm run write:env -s && ng test",
