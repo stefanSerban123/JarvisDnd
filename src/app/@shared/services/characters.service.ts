@@ -10,7 +10,6 @@ import { map } from "rxjs";
 })
 export class CharacterService {
     private static readonly PATH = 'Characters/';
-    uid: string | undefined;
 
     constructor (private database: Database, private userService: UserService) {
         // empty constructor

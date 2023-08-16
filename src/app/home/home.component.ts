@@ -3,11 +3,15 @@ import { Database, objectVal, ref, list, push, object } from '@angular/fire/data
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { traceUntilFirst } from '@angular/fire/performance';
 import { Character } from '@app/@shared/models/character';
+import { CampaignService } from '@app/@shared/services/campaign.service';
 import { CharacterService } from '@app/@shared/services/characters.service';
+import { PasscodesService } from '@app/@shared/services/passcodes.service';
 import { UserService } from '@app/@shared/services/user.service';
 import { CredentialsService } from '@app/auth';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { EMPTY, Observable } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,18 +20,26 @@ import { EMPTY, Observable } from 'rxjs';
 export class HomeComponent implements OnInit {
 
   isLoading = false;
-  players: any;
-  testObjectValue: Observable<any> = EMPTY;
+  showUserData = false;
+  
+  
+  uid: string | undefined;
   userData: any;
 
-  uid: string | undefined;
+  newCampaignName = '';
+  newCampaignPasscode = '';
+  campaignPasscode = '';
 
   charList: any[] = [];
+  campaignList: any[] = [];
+  dmCampaignList: any[] = [];
 
   constructor(private database: Database,
     private credentialsService: CredentialsService,
     private userService: UserService,
-    private charService: CharacterService) {
+    private charService: CharacterService,
+    private campaignService: CampaignService,
+    private passcodeService: PasscodesService) {
 
     this.uid = this.credentialsService.credentials?.userId;
     console.log(this.uid);
@@ -38,7 +50,53 @@ export class HomeComponent implements OnInit {
       this.userData = v;
 
       this.getCurrentCharsDetails();
+      this.getCurrentCampaigns();
+      this.getCurrentDmCampaigns();
     });
+  }
+
+  makeNewCampaignAsDM() {
+    const newCampaign = {
+      name: this.newCampaignName,
+      uid: '',
+      characters: {}
+    }
+
+    this.campaignService.makeNewCampaignAsDm(newCampaign, this.newCampaignPasscode);
+  }
+
+  joinSomeCampaign() {
+    this.passcodeService.getCampaignIdFromPasscodeSub(this.campaignPasscode).subscribe((cId: any) => {
+      this.userService.joinCampaign(cId);
+    });
+  }
+
+  getCurrentDmCampaigns() {
+    this.dmCampaignList = [];
+
+    Object.keys(this.userData.dmcampaigns).forEach((campKey: string) => {
+      this.campaignService.getCampaignByIdSub(campKey).subscribe((v: any) => {
+        
+        if (!!v) {
+          this.dmCampaignList.push(v);
+        }
+
+      });
+    })
+  }
+
+  getCurrentCampaigns() {
+    this.campaignList = [];
+
+    Object.keys(this.userData.campaigns).forEach((campKey: string) => {
+      this.campaignService.getCampaignByIdSub(campKey).subscribe((v: any) => {
+        
+        if (!!v) {
+          this.campaignList.push(v);
+        }
+
+      });
+    })
   }
 
   getCurrentCharsDetails() {

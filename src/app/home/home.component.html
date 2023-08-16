@@ -1,4 +1,6 @@
 <div class="container-fluid">
+
+  <!-- Some kind of header -->
   <div class="jumbotron">
     <h1 class="text-center">
       <img *ngIf="!userData" class="logo" src="assets/ngx-rocket-logo.png" alt="angular logo" />
@@ -6,41 +8,117 @@
       <!-- <span translate>UserId: {{ uid }}</span> -->
       <span *ngIf="!!userData">{{ userData.name }} - Jarvis DND Dashboard</span>
     </h1>
-    
-    <h3>Raw user data: </h3>
-    <p>
-      {{ userData | json }}
-    </p>
 
-    
-    <h3 class="mt-3">Characters</h3>
-    <button (click)="pushOneCharToCurrentUser()">Mock add one char</button>
-
-    <table class="table table-sm table-fluid">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Level</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let char of charList">
-          <td>{{ char?.name }}</td>
-          <td>{{ char?.class }}</td>
-          <td>{{ char?.level }}</td>
-          <td>
-            <button class="btn btn-sm btn-danger" (click)="deleteChar(char.uid)">
-              <em class="fa fa-trash"></em>
-            </button>
-          </td>
-        </tr>  
-        <tr *ngIf="charList.length === 0">
-          <td colspan="3">No chars associated with this account</td>
-        </tr>
-      </tbody>
-    </table>
-
+    <div class="row">
+      <div class="col">
+        <span class="fw-bold">Raw user data: </span>
+        <button class="btn btn-light btn-sm" (click)="showUserData = !showUserData"> Show / hide </button>
+        <code *ngIf="showUserData">{{ userData | json }}</code>
+      </div>
+    </div>
   </div>
+
+  <!-- some kind of section -->
+  <div class="card mt-2">
+    <div class="card-header">
+      <span class="some-title">Characters</span>
+      <button class="float-end" (click)="pushOneCharToCurrentUser()">Mock add one char</button>
+    </div>
+    <div class="card-body">
+
+      <table class="table table-sm table-fluid">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Level</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let char of charList">
+            <td>{{ char?.name }}</td>
+            <td>{{ char?.class }}</td>
+            <td>{{ char?.level }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger float-end" (click)="deleteChar(char.uid)">
+                <em class="fa fa-trash"></em>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="charList.length === 0">
+            <td colspan="4">No chars associated with this account</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- some kind of section -->
+  <div class="card mt-2">
+    <div class="card-header">
+      <span class="some-title">DM Campaigns</span>
+      <button class="float-end" (click)="makeNewCampaignAsDM()">DM a new campaign</button>
+      <input class="float-end" placeholder="campaign passcode" [(ngModel)]="newCampaignPasscode" />
+      <input class="float-end" placeholder="campaign name" [(ngModel)]="newCampaignName" />
+    </div>
+    <div class="card-body">
+
+      <table class="table table-sm table-fluid">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let camp of dmCampaignList">
+            <td>{{ camp?.name }}</td>
+            <td>
+              <!-- <button class="btn btn-sm btn-danger float-end" (click)="deleteChar(char.uid)">
+                <em class="fa fa-trash"></em>
+              </button> -->
+            </td>
+          </tr>
+          <tr *ngIf="charList.length === 0">
+            <td colspan="2">No DM campaigns associated with this account</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- some kind of section -->
+  <div class="card mt-2">
+    <div class="card-header">
+      <span class="some-title">Campaigns</span>
+      <button class="float-end" (click)="joinSomeCampaign()">Join a campaign</button>
+      <input class="float-end" placeholder="passcode" [(ngModel)]="campaignPasscode" />
+    </div>
+    <div class="card-body">
+
+      <table class="table table-sm table-fluid">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let camp of campaignList">
+            <td>{{ camp?.name }}</td>
+            <td>
+              <!-- <button class="btn btn-sm btn-danger float-end" (click)="deleteChar(char.uid)">
+                <em class="fa fa-trash"></em>
+              </button> -->
+            </td>
+          </tr>
+          <tr *ngIf="charList.length === 0">
+            <td colspan="4">No campaigns associated with this account</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
