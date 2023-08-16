@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Optional } from '@angular/core';
-
+import { Database, objectVal, ref, list, push, object, set } from '@angular/fire/database';
 import { environment } from '@env/environment';
 import { Logger, UntilDestroy } from '@shared';
 import { traceUntilFirst } from '@angular/fire/performance';
@@ -7,6 +7,7 @@ import { Auth, GoogleAuthProvider, User, authState, signInAnonymously, signInWit
 import { EMPTY, Observable, Subscription, map } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
+import { JarvisUser } from '@app/@shared/models/user';
 
 const log = new Logger('Login');
 
@@ -23,13 +24,16 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private readonly userDisposable: Subscription | undefined;
   public readonly user: Observable<User | null> = EMPTY;
+  jarvisUser: JarvisUser | undefined;
 
   showLoginButton = false;
   showLogoutButton = false;
 
   constructor(@Optional() private auth: Auth, 
     private authenticationService: AuthenticationService,
-    private router: Router) {
+    private router: Router,
+    private database: Database) {
+
     if (auth) {
       this.user = authState(this.auth);
       this.userDisposable = authState(this.auth).pipe(
@@ -45,8 +49,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void { 
     this.user.subscribe((u: any) => {
       if (!!u) {
-        this.authenticationService.login({ username: u.email, userId: u.uid, remember: false }).subscribe(() => {
-          this.router.navigate(['home', { replaceUrl: true }]);
+        this.jarvisUser = new JarvisUser(u);
+        const doc = ref(this.database, 'Users/' + this.jarvisUser.uid);
+
+        object(doc).subscribe((v: any) => {
+          console.log(v.snapshot.val());
+
+          // kind of an "auto register"
+          if (!v.snapshot.val()) {
+            set(doc, { name: this.jarvisUser?.displayName, email: this.jarvisUser?.email, uid: this.jarvisUser?.uid , photoUrl: this.jarvisUser?.photoURL});
+          }
+
+          this.authenticationService.login({ username: u.email, userId: u.uid, remember: false }).subscribe(() => {
+            this.router.navigate(['home', { replaceUrl: true }]);
+          });
         });
       }
     });
@@ -64,10 +80,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   async loginAnonymously() {
     return await signInAnonymously(this.auth);
-  }
-
-  async logout() {
-    return await signOut(this.auth);
   }
 
   // ngOnInit() {
