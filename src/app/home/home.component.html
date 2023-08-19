@@ -3,8 +3,8 @@
   <!-- Some kind of header -->
   <div class="jumbotron">
     <h1 class="text-center">
-      <img *ngIf="!userData" class="logo" src="assets/ngx-rocket-logo.png" alt="angular logo" />
-      <img *ngIf="!!userData" class="logo" [src]="userData.photoUrl" alt="angular logo" />
+      <img *ngIf="!userData" class="logo" src="assets/ngx-rocket-logo.png"  />
+      <img *ngIf="!!userData" class="logo" [src]="userData.photoUrl"  />
       <!-- <span translate>UserId: {{ uid }}</span> -->
       <span *ngIf="!!userData">{{ userData.name }} - Jarvis DND Dashboard</span>
     </h1>
@@ -16,6 +16,42 @@
         <code *ngIf="showUserData">{{ userData | json }}</code>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <span class="fw-bold">TODO: </span>
+        <button class="btn btn-light btn-sm" (click)="showTodo = !showTodo"> Show / hide </button>
+        <code *ngIf="showTodo"><br/>
+          TODO: model campaigns to properly contain characters on joining, and then displaying them 
+          <br/>
+          TODO2: DM should see a different campaign screen by accessing it differently<br/>
+          TODO3: cache user pics <br/>
+          <!-- maybe something like https://sonigaurav119.medium.com/cache-images-in-angular-43964e26ff62 -->
+          TODO4: model characters to contain items<br/>
+          TODO5: characters on a different screen, maybe<br/>
+          TODO6: actually do something with the frontend, this is just a mockup<br/>
+          TODO7: be able to exit a campaign
+          TODO8: model encounters
+        </code>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <span class="fw-bold">basic ideas: </span>
+        <button class="btn btn-light btn-sm" (click)="showHowoto = !showHowoto"> Show / hide </button>
+        <code *ngIf="showHowoto"><br/>
+          1. Have some character maker, a really simplified version of a char sheet<br/>
+          2. Be able to create (as DM) new campaigns<br/>
+          3. Be able to join campaigns via passcode (as player, defined by DM previously), not before choosing a character to join as<br/>
+          4. Have a dedicated campaign screen, with the party, encounters (maybe even encounter history) and maybe some pinned notes<br/>
+          5. Encounters should be able to track initiative, and have some kind of turn order, and HP tracking, including mobs<br/>
+          6. Which means mobs need to be modelled as well, could just be a 'public' collection.<br/>
+          7. Should be able to add items to characters, because this entire projects` ideea initially was to track custom items
+        </code>
+      </div>
+    </div>
+
   </div>
 
   <!-- some kind of section -->
@@ -94,6 +130,7 @@
       <span class="some-title">Campaigns</span>
       <button class="float-end" (click)="joinSomeCampaign()">Join a campaign</button>
       <input class="float-end" placeholder="passcode" [(ngModel)]="campaignPasscode" />
+      <input class="float-end" placeholder="some character " disabled />
     </div>
     <div class="card-body">
 
@@ -108,9 +145,11 @@
           <tr *ngFor="let camp of campaignList">
             <td>{{ camp?.name }}</td>
             <td>
-              <!-- <button class="btn btn-sm btn-danger float-end" (click)="deleteChar(char.uid)">
-                <em class="fa fa-trash"></em>
-              </button> -->
+             
+              <a class="nav-item nav-link text-uppercase" [routerLink]="['/campaign', camp?.uid]">
+                <span translate>JOIN ME</span>
+              </a>
+              
             </td>
           </tr>
           <tr *ngIf="charList.length === 0">

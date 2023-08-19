@@ -21,7 +21,8 @@ export class HomeComponent implements OnInit {
 
   isLoading = false;
   showUserData = false;
-  
+  showTodo = false;
+  showHowoto = false;
   
   uid: string | undefined;
   userData: any;

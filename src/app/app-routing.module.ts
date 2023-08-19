@@ -3,7 +3,9 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { Shell } from '@app/shell/shell.service';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'about', loadChildren: () => import('./about/about.module').then((m) => m.AboutModule) }]),
+  Shell.childRoutes([{ path: 'about', loadChildren: () => import('./about/about.module').then((m) => m.AboutModule) },
+  // Shell.childRoutes([{ path: 'campaign', loadChildren: () => import('./campaign/campaign.module').then((m) => m.CampaignModule) }]),
+    { path: 'campaign', loadChildren: () => import('./campaign/campaign.module').then((m) => m.CampaignModule)}]),
   // Fallback when no prior route is matched
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

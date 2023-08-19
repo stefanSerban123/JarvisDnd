@@ -45,6 +45,8 @@ export class UserService {
         const doc = ref(this.database, UserService.USER_PATH + this.uid + UserService.CAMPAIGNS_SUBPATH);
 
         update(doc, { [campaignId]: true });
+
+        // then go to Campaign and add some character there
     }
 
     removeCharFromUser(charId: string) {
