@@ -1,11 +1,8 @@
-export class Campaign {
+import { Generic } from "./_generic";
+
+export class Campaign extends Generic {
     name: string | undefined;
     uid: string | undefined;
     characters: any | undefined;
-
-    constructor(src?: any) {
-        if (!!src) {
-            Object.assign(this, src);
-        }
-    }
+    encounters: any | undefined;
 }

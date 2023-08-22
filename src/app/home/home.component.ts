@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Database, objectVal, ref, list, push, object } from '@angular/fire/database';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { traceUntilFirst } from '@angular/fire/performance';
+import { Campaign } from '@app/@shared/models/campaign';
 import { Character } from '@app/@shared/models/character';
 import { CampaignService } from '@app/@shared/services/campaign.service';
 import { CharacterService } from '@app/@shared/services/characters.service';
@@ -57,11 +58,14 @@ export class HomeComponent implements OnInit {
   }
 
   makeNewCampaignAsDM() {
-    const newCampaign = {
-      name: this.newCampaignName,
-      uid: '',
-      characters: {}
-    }
+    // const newCampaign = {
+    //   name: this.newCampaignName,
+    //   uid: '',
+    //   characters: {},
+    //   encounters: {}
+    // }
+
+    const newCampaign = new Campaign({ name: this.newCampaignName});
 
     this.campaignService.makeNewCampaignAsDm(newCampaign, this.newCampaignPasscode);
   }

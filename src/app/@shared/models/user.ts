@@ -1,4 +1,6 @@
-export class JarvisUser {
+import { Generic } from "./_generic";
+
+export class JarvisUser extends Generic  {
     accessToken: string | undefined;
     displayName: string | undefined;
     email: string | undefined;
@@ -6,7 +8,4 @@ export class JarvisUser {
     photoURL: string | undefined;
     // has more stuff but this is the only important stuff
 
-    constructor (src: any) {
-        Object.assign(this, src);
-    }
 }
