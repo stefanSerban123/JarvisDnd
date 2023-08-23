@@ -7,7 +7,7 @@ import { Auth, GoogleAuthProvider, User, authState, signInAnonymously, signInWit
 import { EMPTY, Observable, Subscription, map } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
-import { JarvisUser } from '@app/@shared/models/user';
+import { JarvisUser } from '@app/@shared/models/user.model';
 
 const log = new Logger('Login');
 

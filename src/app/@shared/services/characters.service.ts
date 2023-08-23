@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Database, DatabaseReference, object, push, ref, remove, update } from "@angular/fire/database";
 import { CredentialsService } from "@app/auth";
-import { Character } from "../models/character";
+import { Character } from "../models/character.model";
 import { UserService } from "./user.service";
 import { map } from "rxjs";
 

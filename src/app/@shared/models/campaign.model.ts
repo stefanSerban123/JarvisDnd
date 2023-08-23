@@ -1,4 +1,4 @@
-import { Generic } from "./_generic";
+import { Generic } from "./_generic.model";
 
 export class Campaign extends Generic {
     name: string | undefined;

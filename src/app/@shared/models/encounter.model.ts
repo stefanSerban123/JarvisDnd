@@ -1,5 +1,5 @@
-import { Character } from "./character";
-import { Generic } from "./_generic";
+import { Character } from "./character.model";
+import { Generic } from "./_generic.model";
 
 export class Encounter extends Generic {
     name: string | undefined;

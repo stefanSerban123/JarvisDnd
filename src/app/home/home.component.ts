@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Database, objectVal, ref, list, push, object } from '@angular/fire/database';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { traceUntilFirst } from '@angular/fire/performance';
-import { Campaign } from '@app/@shared/models/campaign';
-import { Character } from '@app/@shared/models/character';
+import { Campaign } from '@app/@shared/models/campaign.model';
+import { Character } from '@app/@shared/models/character.model';
 import { CampaignService } from '@app/@shared/services/campaign.service';
 import { CharacterService } from '@app/@shared/services/characters.service';
 import { PasscodesService } from '@app/@shared/services/passcodes.service';
@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   newCampaignPasscode = '';
   campaignPasscode = '';
 
+  selectedCharacter = '';
   charList: any[] = [];
   campaignList: any[] = [];
   dmCampaignList: any[] = [];
@@ -72,7 +73,7 @@ export class HomeComponent implements OnInit {
 
   joinSomeCampaign() {
     this.passcodeService.getCampaignIdFromPasscodeSub(this.campaignPasscode).subscribe((cId: any) => {
-      this.userService.joinCampaign(cId);
+      this.campaignService.joinCampaign(cId, this.selectedCharacter);
     });
   }
 

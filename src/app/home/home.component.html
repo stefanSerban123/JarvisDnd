@@ -3,8 +3,8 @@
   <!-- Some kind of header -->
   <div class="jumbotron">
     <h1 class="text-center">
-      <img *ngIf="!userData" class="logo" src="assets/ngx-rocket-logo.png"  />
-      <img *ngIf="!!userData" class="logo" [src]="userData.photoUrl"  />
+      <img *ngIf="!userData" class="logo" src="assets/ngx-rocket-logo.png" />
+      <img *ngIf="!!userData" class="logo" [src]="userData.photoUrl" />
       <!-- <span translate>UserId: {{ uid }}</span> -->
       <span *ngIf="!!userData">{{ userData.name }} - Jarvis DND Dashboard</span>
     </h1>
@@ -124,13 +124,16 @@
     </div>
   </div>
 
-  <!-- some kind of section -->
+  <!-- Join campaign section -->
   <div class="card mt-2">
     <div class="card-header">
       <span class="some-title">Campaigns</span>
       <button class="float-end" (click)="joinSomeCampaign()">Join a campaign</button>
       <input class="float-end" placeholder="passcode" [(ngModel)]="campaignPasscode" />
-      <input class="float-end" placeholder="some character " disabled />
+      <select class="float-end" [(ngModel)]="selectedCharacter">
+        <option value="" disabled>Choose a character</option>
+        <option *ngFor="let char of charList" [ngValue]="char.uid">{{ char.name }}</option>
+      </select>
     </div>
     <div class="card-body">
 
@@ -145,11 +148,11 @@
           <tr *ngFor="let camp of campaignList">
             <td>{{ camp?.name }}</td>
             <td>
-             
+
               <a class="nav-item nav-link text-uppercase" [routerLink]="['/campaign', camp?.uid]">
                 <span translate>JOIN ME</span>
               </a>
-              
+
             </td>
           </tr>
           <tr *ngIf="charList.length === 0">

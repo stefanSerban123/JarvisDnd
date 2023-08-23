@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Database, object, push, ref } from "@angular/fire/database";
 import { map } from "rxjs";
 import { CampaignService } from "./campaign.service";
-import { Encounter } from "../models/encounter";
+import { Encounter } from "../models/encounter.model";
 
 @Injectable({
     providedIn: 'root'

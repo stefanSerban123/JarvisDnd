@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Database, object, push, ref, update } from "@angular/fire/database";
+import { Database, list, object, push, ref, update } from "@angular/fire/database";
 import { UserService } from "./user.service";
 import { map } from "rxjs";
-import { Campaign } from "../models/campaign";
+import { Campaign } from "../models/campaign.model";
 import { PasscodesService } from "./passcodes.service";
 
 @Injectable({
@@ -10,6 +10,8 @@ import { PasscodesService } from "./passcodes.service";
 })
 export class CampaignService {
     private static readonly PATH = 'Campaigns/';
+    private static readonly ENCOUNTERS_SUBPATH = '/encounters';
+    private static readonly CHARACHTERS_SUBPATH = '/characters';
 
     constructor(private database: Database, 
         private userService: UserService,
@@ -37,5 +39,23 @@ export class CampaignService {
                 this.passcodeService.addNewPasscode(passcode, reference.key);
             }
         });
+    }
+
+    addNewEncounter(campaignId: string, encounterId: string) {
+        const doc = ref(this.database, CampaignService.PATH + campaignId + CampaignService.ENCOUNTERS_SUBPATH);
+
+        update(doc, { [encounterId]: true });
+    }
+
+    joinCampaign(campaignId: string, characterId: string) {
+        this.userService.joinCampaignPromise(campaignId).then(() => {
+            this.addNewPlayerToCampaign(campaignId, characterId);
+        });
+    }
+
+    addNewPlayerToCampaign(campaignId: string, characterId: string) {
+        const doc = ref(this.database, CampaignService.PATH + campaignId + CampaignService.CHARACHTERS_SUBPATH);
+
+        update(doc, { [characterId]: true });
     }
 }

@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Database, DatabaseReference, object, push, ref, remove, set, update } from "@angular/fire/database";
 import { CredentialsService } from "@app/auth";
-import { JarvisUser } from "../models/user";
+import { JarvisUser } from "../models/user.model";
 
-import { map } from "rxjs";
+import { map, of } from "rxjs";
+import { CampaignService } from "./campaign.service";
 
 @Injectable({
     providedIn: 'root'
@@ -16,8 +17,21 @@ export class UserService {
 
     uid: string | undefined;
 
-    constructor(private database: Database, private credentialsService: CredentialsService) {
-        this.uid = this.credentialsService.credentials?.userId;
+    constructor(private database: Database, 
+        private credentialsService: CredentialsService) {
+            this.uid = this.credentialsService.credentials?.userId;
+    }
+
+    getDmStatusForCampaignSub(campaignId: string | null) {
+        if (!campaignId) {
+            return of(false);
+        }
+
+        const doc = ref(this.database, UserService.USER_PATH + this.uid + UserService.DM_CAMPAIGNS_SUBPATH + '/' + campaignId);
+
+        return object(doc).pipe(
+            map((v: any) => !!v)
+        );
     }
 
     getJarvisUserSub() {
@@ -41,12 +55,11 @@ export class UserService {
         update(doc, { [campaignId]: true });
     }
 
-    joinCampaign(campaignId: string) {
+    joinCampaignPromise(campaignId: string) {
         const doc = ref(this.database, UserService.USER_PATH + this.uid + UserService.CAMPAIGNS_SUBPATH);
 
-        update(doc, { [campaignId]: true });
-
-        // then go to Campaign and add some character there
+        // join campaign then add character to campaign
+        return update(doc, { [campaignId]: true });
     }
 
     removeCharFromUser(charId: string) {
