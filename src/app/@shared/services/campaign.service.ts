@@ -9,7 +9,7 @@ import { PasscodesService } from "./passcodes.service";
     providedIn: 'root'
 })
 export class CampaignService {
-    private static readonly PATH = 'Campaigns/';
+    private static readonly PATH = 'campaigns/';
     private static readonly ENCOUNTERS_SUBPATH = '/encounters';
     private static readonly CHARACHTERS_SUBPATH = '/characters';
 
@@ -27,18 +27,21 @@ export class CampaignService {
         ));
     }
 
-    makeNewCampaignAsDm(c: Campaign, passcode: string) {
+    makeNewCampaignAsDm(c: Campaign) {
         const doc = ref(this.database, CampaignService.PATH);
 
         push(doc, c).then(reference => {
-            if (!!reference.key) {
-                // also add the uid to the char object for ease of use later on
-                update(ref(this.database, CampaignService.PATH + '/' + reference.key), { uid: reference.key });
-
-                this.userService.addNewDMCampaignToUser(reference.key);
-                this.passcodeService.addNewPasscode(passcode, reference.key);
-            }
+            console.log(reference);
         });
+        
+        // .then(reference => {
+        //     if (!!reference.key) {
+        //         // also add the uid to the char object for ease of use later on
+        //         update(ref(this.database, CampaignService.PATH + '/' + reference.key), { uid: reference.key });
+
+        //         this.userService.addNewDMCampaignToUser(reference.key);
+        //     }
+        // });
     }
 
     addNewEncounter(campaignId: string, encounterId: string) {

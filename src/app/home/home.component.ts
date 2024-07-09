@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   showTodo = false;
   showHowoto = false;
   
-  uid: string | undefined;
+  uid: string;
   userData: any;
 
   newCampaignName = '';
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
     private campaignService: CampaignService,
     private passcodeService: PasscodesService) {
 
-    this.uid = this.credentialsService.credentials?.userId;
+    this.uid = this.credentialsService.credentials?.userId || '';
     console.log(this.uid);
   }
 
@@ -66,9 +66,16 @@ export class HomeComponent implements OnInit {
     //   encounters: {}
     // }
 
-    const newCampaign = new Campaign({ name: this.newCampaignName});
+    const newCampaign = new Campaign({ 
+      name: this.newCampaignName, 
+      passcode: this.newCampaignPasscode,
+      dmID: this.uid,
+      playerIDs: {
+        [this.uid]: true
+      }
+    });
 
-    this.campaignService.makeNewCampaignAsDm(newCampaign, this.newCampaignPasscode);
+    this.campaignService.makeNewCampaignAsDm(newCampaign);
   }
 
   joinSomeCampaign() {
@@ -93,6 +100,10 @@ export class HomeComponent implements OnInit {
 
   getCurrentCampaigns() {
     this.campaignList = [];
+
+    if (this.userData.campaigns === undefined) {
+      return;
+    }
 
     Object.keys(this.userData.campaigns).forEach((campKey: string) => {
       this.campaignService.getCampaignByIdSub(campKey).subscribe((v: any) => {
