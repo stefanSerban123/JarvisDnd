@@ -6,4 +6,7 @@ export class Campaign extends Generic {
     dmID: string | undefined;
     playerIDs: string[] | undefined;
     passcode: string | undefined;
+	
+	
+	
 }
